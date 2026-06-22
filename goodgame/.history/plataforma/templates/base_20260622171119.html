@@ -1,0 +1,61 @@
+{% load tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+    <link rel="icon" href="images/juego.png" type="image/x-icon">
+    <title><img src="images/juego.png" style="width: 40px; height: 40px;" alt="Logo" srcset="">{% block title %}GoodGame{% endblock %}</title>
+</head>
+
+<body class="min-h-screen flex flex-col" style="background-color: #aeafc1;">
+
+    <nav class="flex justify-between items-center bg-gray-800 text-white p-4 font-bold">
+        <a href="{% url 'base' %}" class="text-2xl flex items-center gap-2"><img src="images/juego.png" style="width: 40px; height: 40px;" alt="Logo" srcset="">GoodGame</a>
+
+        <ul class="flex gap-6">
+            <li><a href="{% url 'base' %}" class="hover:text-green-200">Inicio</a></li>
+            <li><a href="{% url 'lista_juegos' %}" class="hover:text-green-200">Juegos</a></li>
+            <li><a href="{% url 'base' %}" class="hover:text-green-200">Carrito</a></li>
+        </ul>
+
+        <div class="flex items-center gap-4">
+            {% if user.is_authenticated %}
+            <span class="text-sm">Hola, {{ user.username }}</span>
+            <a href="{% url 'logout' %}" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white">
+                Cerrar sesión
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}" class="hover:text-green-200">Login</a>
+            <a href="{% url 'register' %}" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-white">
+                Registrarse
+            </a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+        {% block content %}
+        <h1 class="text-4xl font-bold border-dashed border-4 border-gray-400 p-8 mt-8 text-center">
+            MAIN
+        </h1>
+        {% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-white p-4 mt-2">
+        <div class="flex justify-between items-center">
+            <div>
+                <ul>
+                    <li>Contacto: 358 123 4563</li>
+                    <li>Instagram: @GoodGame</li>
+                    <li>Facebook: GoodGame</li>
+                </ul>
+            </div>
+            <p>Copyright © 2026 - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+</body>
+</html>

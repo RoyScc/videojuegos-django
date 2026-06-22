@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio | GoodGame{% endblock %}
+
+{% block content %}
+
+<h1 class="text-4xl font-bold text-gray-800 mb-8">Bienvenido a GoodGame 🎮</h1>
+
+<!-- CARRUSEL -->
+{% if juegos_carrousel %}
+<div class="relative w-full mb-12">
+    <div id="carousel" class="overflow-hidden rounded-2xl shadow-lg bg-white">
+        <div id="carousel-track" class="flex transition-transform duration-500 ease-in-out">
+            {% for juego in juegos_carrousel %}
+                <div class="min-w-full flex flex-col md:flex-row items-center bg-gray-900 text-white">
+                    <div class="md:w-1/2 w-full">
+                        {% if juego.imagen %}
+                            <img src="{{ juego.imagen }}" alt="{{ juego.nombre }}"
+                                 class="w-full h-80 object-cover">
+                        {% else %}
+                            <div class="w-full h-80 bg-gray-700 flex items-center justify-center text-gray-300">
+                                Sin imagen
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="md:w-1/2 w-full p-8">
+                        <h2 class="text-3xl font-bold mb-3">{{ juego.nombre }}</h2>
+
+                        {% if juego.plataforma %}
+                            <p class="text-sm text-gray-300 mb-2">
+                                Plataforma: {{ juego.plataforma }}
+                            </p>
+                        {% endif %}
+
+                        {% if juego.fecha_lanzamiento %}
+                            <p class="text-sm text-gray-300 mb-4">
+                                Lanzamiento: {{ juego.fecha_lanzamiento }}
+                            </p>
+                        {% endif %}
+
+                        {% if juego.resumen %}
+                            <p class="text-gray-200 mb-6">
+                                {{ juego.resumen|truncatechars:250 }}
+                            </p>
+                        {% endif %}
+
+                        <a href="{% url 'detalle_juego' juego.id %}"
+                           class="inline-block bg-green-600 hover:bg-green-700 px-5 py-3 rounded-xl font-semibold">
+                            Ver detalle
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Botones -->
+    <button onclick="moveSlide(-1)"
+            class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white px-4 py-2 rounded-full">
+        ‹
+    </button>
+    <button onclick="moveSlide(1)"
+            class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white px-4 py-2 rounded-full">
+        ›
+    </button>
+</div>
+{% endif %}
+
+
+<!-- LISTADO RESTANTE -->
+<section>
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Más juegos</h2>
+
+    {% if resto_juegos %}
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for juego in resto_juegos %}
+                <div class="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
+                    {% if juego.imagen %}
+                        <img src="{{ juego.imagen }}" alt="{{ juego.nombre }}"
+                             class="w-full h-48 object-cover">
+                    {% else %}
+                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                            Sin imagen
+                        </div>
+                    {% endif %}
+
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">{{ juego.nombre }}</h3>
+
+                        {% if juego.plataforma %}
+                            <p class="text-sm text-gray-500 mb-1">Plataforma: {{ juego.plataforma }}</p>
+                        {% endif %}
+
+                        {% if juego.fecha_lanzamiento %}
+                            <p class="text-sm text-gray-500 mb-3">Lanzamiento: {{ juego.fecha_lanzamiento }}</p>
+                        {% endif %}
+
+                        {% if juego.resumen %}
+                            <p class="text-sm text-gray-600 mb-4">
+                                {{ juego.resumen|truncatechars:100 }}
+                            </p>
+                        {% endif %}
+
+                        <a href="{% url 'detalle_juego' juego.id %}"
+                           class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                            Ver más
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-600">No hay más juegos para mostrar.</p>
+    {% endif %}
+</section>
+
+<script>
+    let currentIndex = 0;
+    const track = document.getElementById("carousel-track");
+    const slides = track ? track.children.length : 0;
+
+    function moveSlide(direction) {
+        if (!track || slides === 0) return;
+
+        currentIndex += direction;
+
+        if (currentIndex < 0) {
+            currentIndex = slides - 1;
+        } else if (currentIndex >= slides) {
+            currentIndex = 0;
+        }
+
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    // autoplay opcional cada 5 segundos
+    setInterval(() => {
+        moveSlide(1);
+    }, 5000);
+</script>
+
+{% endblock %}
