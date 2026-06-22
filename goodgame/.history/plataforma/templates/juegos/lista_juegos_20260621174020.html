@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Juegos{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-10 px-4">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Lista de juegos</h1>
+
+        <a href="{% url 'importar_juegos_steam' %}"
+           class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold">
+            Importar desde Steam
+        </a>
+    </div>
+
+    {% if juegos %}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for juego in juegos %}
+                <div class="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">{{ juego.nombre }}</h2>
+                    <p class="text-sm text-gray-500 mb-4">Steam AppID: {{ juego.steam_appid }}</p>
+
+                    <div class="flex gap-3">
+                        <a href="{% url 'detalle_juego' juego.id %}"
+                           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                            Ver
+                        </a>
+                        <a href="{% url 'editar_juego' juego.id %}"
+                           class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">
+                            Editar
+                        </a>
+                        <a href="{% url 'borrar_juego' juego.id %}"
+                           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+                            Borrar
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-600">Todavía no hay juegos importados.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ juego.nombre }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto py-10 px-4">
+    <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ juego.nombre }}</h1>
+
+        <p class="text-gray-600 mb-2">
+            <span class="font-semibold">ID interno:</span> {{ juego.id }}
+        </p>
+
+        <p class="text-gray-600 mb-6">
+            <span class="font-semibold">Steam AppID:</span> {{ juego.steam_appid }}
+        </p>
+
+        <div class="flex gap-4">
+            <a href="{% url 'editar_juego' juego.id %}"
+               class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-3 rounded-xl">
+                Editar
+            </a>
+
+            <a href="{% url 'borrar_juego' juego.id %}"
+               class="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-xl">
+                Borrar
+            </a>
+
+            <a href="{% url 'lista_juegos' %}"
+               class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-3 rounded-xl">
+                Volver
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

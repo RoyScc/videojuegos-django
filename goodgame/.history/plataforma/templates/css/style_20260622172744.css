@@ -1,0 +1,31 @@
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.border-rgb-animado {
+  position: relative;
+  /* Elige el radio de curvatura que quieras aquí (ej. 16px) */
+  border-radius: 16px; 
+  background: #0f172a; /* Color de fondo interno (debe coincidir con el fondo de tu tarjeta) */
+}
+
+/* Este pseudoelemento creará el borde exacto por detrás */
+.border-rgb-animado::before {
+  content: "";
+  position: absolute;
+  inset: -4px; /* Este valor negativo es el grosor del borde (4px) */
+  z-index: -1;
+  border-radius: calc(16px + 4px); /* Radio del borde + grosor para que encaje perfecto */
+  background: conic-gradient(
+    from var(--gradient-angle),
+    #ff0000, #ff7700, #ffff00, #00ff00, #00ffff, #0000ff, #8a00ff, #ff00ff, #ff0000
+  );
+  animation: rotation-rgb 4s linear infinite;
+}
+
+@keyframes rotation-rgb {
+  0% { --gradient-angle: 0deg; }
+  100% { --gradient-angle: 360deg; }
+}
