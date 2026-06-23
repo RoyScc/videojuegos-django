@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ juego.nombre }} | Biblioteca{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+    {% if juego.imagen %}
+        <img src="{{ juego.imagen }}" alt="{{ juego.nombre }}" class="w-full h-96 object-cover">
+    {% else %}
+        <img src="{% static 'images/sinImagen.jpg' %}" alt="Sin imagen" class="w-full h-96 object-cover">
+    {% endif %}
+
+    <div class="p-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ juego.nombre }}</h1>
+
+        {% if juego.plataforma %}
+            <p class="text-gray-600 mb-2">
+                <strong>Plataforma:</strong> {{ juego.plataforma }}
+            </p>
+        {% endif %}
+
+        {% if juego.fecha_lanzamiento %}
+            <p class="text-gray-600 mb-4">
+                <strong>Lanzamiento:</strong> {{ juego.fecha_lanzamiento }}
+            </p>
+        {% endif %}
+
+        <h2 class="text-2xl font-bold text-gray-800 mt-6 mb-3">Descripción</h2>
+
+        {% if juego.resumen %}
+            <p class="text-gray-700 leading-relaxed">{{ juego.resumen }}</p>
+        {% else %}
+            <p class="text-gray-500">Sin descripción disponible.</p>
+        {% endif %}
+
+        <a href="{% url 'biblioteca' %}"
+           class="inline-block mt-8 bg-gray-700 hover:bg-gray-800 text-white px-5 py-3 rounded-xl">
+            Volver a mi biblioteca
+        </a>
+    </div>
+</div>
+{% endblock %}

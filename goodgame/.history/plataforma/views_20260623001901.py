@@ -260,7 +260,6 @@ def borrar_juego(request, juego_id):
     return render(request, 'juegos/borrar_juego.html', {'juego': juego})
 
 #Agregado de importación de imágenes desde TheGamesDB
-@staff_member_required
 def importar_imagenes_gamesdb(request):
     if request.method != "POST":
         return redirect("lista_juegos")

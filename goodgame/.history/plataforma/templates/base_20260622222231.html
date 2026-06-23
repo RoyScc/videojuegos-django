@@ -31,12 +31,7 @@
 
             {% if user.is_authenticated %}
                 <li><a href="{% url 'lista_juegos' %}" class="hover:text-green-200">Juegos</a></li>
-                <li><a href="{% url 'ver_carrito' %}" class="hover:text-green-200 flex items-center gap-2">Carrito 
-                    {% if cantidad_carrito > 0 %}
-                        <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">{{ cantidad_carrito }}</span>
-                    {% endif %}
-                    </a>
-                </li>
+                <li><a href="{% url 'ver_carrito' %}" class="hover:text-green-200 flex items-center gap-2">Carrito</a></li>
                 <li><a href="{% url 'biblioteca' %}" class="hover:text-green-200">Biblioteca</a></li>
             {% endif %}
         </ul>

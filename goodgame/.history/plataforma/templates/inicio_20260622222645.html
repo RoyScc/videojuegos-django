@@ -79,7 +79,7 @@
                                             Editar
                                         </a>
                                     {% else %}
-                                        <a href="{% url 'agregar_al_carrito' juego.id %}?next={{ request.get_full_path }}"
+                                        <a href="{% url 'agregar_al_carrito' juego.id %}"
                                         class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl font-semibold text-white">
                                             🛒 Agregar al carrito
                                         </a>
@@ -169,13 +169,11 @@
 
                                 {% else %}
 
-                                    <a href="{% url 'agregar_al_carrito' juego.id %}?next={{ request.get_full_path }}"
+                                    <a href="{% url 'agregar_al_carrito' juego.id %}"
                                     class="inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-                                         Agregar al 🛒
+                                        🛒 Agregar
                                     </a>
-                                    <a href="{% url 'comprar_ahora' juego.id %}?next={{ request.get_full_path }}" class="inline-flex items-center gap-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">
-                                        Comprar
-                                    </a>
+
                                 {% endif %}
 
                             </div>

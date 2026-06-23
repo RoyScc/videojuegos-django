@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Carrito | GoodGame{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+    <h1 class="text-3xl font-bold mb-6">Mi carrito</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mb-4 p-3 rounded bg-blue-100 text-blue-800">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if items %}
+        <div class="space-y-4">
+            {% for item in items %}
+                <div class="flex items-center justify-between border p-4 rounded-xl">
+                    <div class="flex items-center gap-4">
+                        {% if item.juego.imagen %}
+                            <img src="{{ item.juego.imagen }}" class="w-24 h-24 object-cover rounded-lg">
+                        {% else %}
+                            <img src="{% static 'images/sinImagen.jpg' %}" class="w-24 h-24 object-cover rounded-lg">
+                        {% endif %}
+
+                        <div>
+                            <h2 class="text-xl font-bold">{{ item.juego.nombre }}</h2>
+                            <p class="text-gray-500">{{ item.juego.plataforma }}</p>
+                            <p class="text-green-600 font-bold">${{ item.juego.precio }}</p>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="{% url 'quitar_del_carrito' item.id %}">
+                        {% csrf_token %}
+                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+                            Eliminar
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-8 flex justify-between items-center">
+            <p class="text-2xl font-bold">Total: ${{ total }}</p>
+
+            <div class="flex gap-4">
+                <form method="POST" action="{% url 'comprar_carrito' %}">
+                    {% csrf_token %}
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold">
+                        Comprar
+                    </button>
+                </form>
+
+                <form method="POST" action="{% url 'cancelar_compra' %}">
+                    {% csrf_token %}
+                    <button class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-xl font-bold">
+                        Cancelar compra
+                    </button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-gray-600">Tu carrito está vacío.</p>
+        <a href="{% url 'inicio' %}" class="inline-block mt-4 bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 rounded-xl">
+            Ver juegos
+        </a>
+    {% endif %}
+</div>
+{% endblock %}

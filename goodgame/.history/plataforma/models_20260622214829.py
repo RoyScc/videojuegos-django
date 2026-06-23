@@ -32,22 +32,3 @@ class CarritoItem(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.juego.nombre}"
-    
-class BibliotecaItem(models.Model):
-    usuario = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="biblioteca_items"
-    )
-    juego = models.ForeignKey(
-        Juego,
-        on_delete=models.CASCADE,
-        related_name="biblioteca_items"
-    )
-    fecha_compra = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ("usuario", "juego")
-
-    def __str__(self):
-        return f"{self.usuario.username} - {self.juego.nombre}"

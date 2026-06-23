@@ -1,18 +1,16 @@
 import requests
 import random
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from .forms import LoginForm, RegisterForm, JuegoForm
 from django.http import HttpResponse
-from .models import Juego, CarritoItem, BibliotecaItem
+from .models import Juego
 from datetime import datetime
 from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
 
 def base(request):
     juegos = Juego.objects.all()[:20]  # mostrar algunos en home
@@ -47,7 +45,7 @@ def login_view(request):
 
             if user is not None:
                 auth_login(request, user)
-                return redirect('inicio')
+                return redirect('base')
             else:
                 form.add_error(None, 'Usuario o contraseña incorrectos.')
 
@@ -63,16 +61,16 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)  # lo loguea automáticamente al registrarse
-            return redirect('inicio')
+            return redirect('base')
 
     return render(request, 'registration/register.html', {'form': form})
 
 
 def logout_view(request):
-    logout(request)
-    return redirect('login')
+    auth_logout(request)
+    return redirect('base')
 
-#Agregado de vistas para la gestión de juegos
+#-----------------------------------------
 
 def lista_juegos(request):
     juegos = Juego.objects.all().order_by("nombre")
@@ -153,6 +151,20 @@ def importar_juegos_gamesdb(request):
                         fecha_lanzamiento = datetime.strptime(fecha_raw, "%Y-%m-%d").date()
                     except ValueError:
                         fecha_lanzamiento = None
+
+                anio_actual = date.today().year
+
+                if fecha_lanzamiento:
+                    edad = anio_actual - fecha_lanzamiento.year
+
+                    if edad <= 2:
+                        precio = random.randint(7000, 10000)
+                    elif edad <= 5:
+                        precio = random.randint(4000, 7000)
+                    else:
+                        precio = random.randint(1000, 4000)
+                else:
+                    precio = random.randint(1000, 5000)
                     
                 imagen = ""
 
@@ -189,6 +201,7 @@ def importar_juegos_gamesdb(request):
                         "fecha_lanzamiento": fecha_lanzamiento,
                         "resumen": resumen,
                         "imagen": imagen,
+                        "precio": precio,
                     }
                 )
 
@@ -227,12 +240,11 @@ def importar_juegos_gamesdb(request):
         messages.error(request, f"Error al conectar con TheGamesDB: {e}")
         return redirect("lista_juegos")
 
-@staff_member_required
 def detalle_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
     return render(request, 'juegos/detalle_juego.html', {'juego': juego})
 
-@staff_member_required
+
 def editar_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
 
@@ -249,7 +261,7 @@ def editar_juego(request, juego_id):
         'juego': juego
     })
 
-@staff_member_required
+
 def borrar_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
 
@@ -259,8 +271,6 @@ def borrar_juego(request, juego_id):
 
     return render(request, 'juegos/borrar_juego.html', {'juego': juego})
 
-#Agregado de importación de imágenes desde TheGamesDB
-@staff_member_required
 def importar_imagenes_gamesdb(request):
     if request.method != "POST":
         return redirect("lista_juegos")
@@ -337,128 +347,3 @@ def importar_imagenes_gamesdb(request):
     except requests.RequestException as e:
         messages.error(request, f"Error al importar imágenes desde TheGamesDB: {e}")
         return redirect("lista_juegos")
-    
-
-#Agregado de carrito de compras
-@login_required
-def agregar_al_carrito(request, juego_id):
-    juego = get_object_or_404(Juego, id=juego_id)
-
-    CarritoItem.objects.get_or_create(
-        usuario=request.user,
-        juego=juego
-    )
-
-    messages.success(request, f"{juego.nombre} fue agregado al carrito.")
-
-    next_url = request.GET.get("next")
-    if next_url:
-        return redirect(next_url)
-
-    return redirect("inicio")
-
-@login_required
-def comprar_ahora(request, juego_id):
-    juego = get_object_or_404(Juego, id=juego_id)
-
-    CarritoItem.objects.get_or_create(
-        usuario=request.user,
-        juego=juego
-    )
-
-    return redirect("ver_carrito")
-
-@login_required
-def ver_carrito(request):
-    items = CarritoItem.objects.filter(usuario=request.user).select_related("juego")
-
-    total = sum(item.juego.precio for item in items)
-
-    return render(request, "carrito/ver_carrito.html", {
-        "items": items,
-        "total": total
-    })
-
-
-@login_required
-def quitar_del_carrito(request, item_id):
-    item = get_object_or_404(CarritoItem, id=item_id, usuario=request.user)
-
-    if request.method == "POST":
-        item.delete()
-        messages.success(request, "Juego eliminado del carrito.")
-
-    return redirect("ver_carrito")
-
-
-@login_required
-def cancelar_compra(request):
-    if request.method == "POST":
-        CarritoItem.objects.filter(usuario=request.user).delete()
-        messages.info(request, "Compra cancelada.")
-
-    return redirect("ver_carrito")
-
-
-@login_required
-def comprar_carrito(request):
-    items = CarritoItem.objects.filter(usuario=request.user)
-
-    if not items.exists():
-        messages.error(request, "Tu carrito está vacío.")
-        return redirect("ver_carrito")
-
-    if request.method == "POST":
-        items.delete()
-        return redirect("compra_exitosa")
-
-    return redirect("ver_carrito")
-
-
-@login_required
-def compra_exitosa(request):
-    return render(request, "carrito/compra_exitosa.html")
-
-#Agregado de biblioteca de juegos
-
-@login_required
-def comprar_carrito(request):
-    items = CarritoItem.objects.filter(usuario=request.user)
-
-    if not items.exists():
-        messages.error(request, "Tu carrito está vacío.")
-        return redirect("ver_carrito")
-
-    if request.method == "POST":
-        for item in items:
-            BibliotecaItem.objects.get_or_create(
-                usuario=request.user,
-                juego=item.juego
-            )
-
-        items.delete()
-        return redirect("compra_exitosa")
-
-    return redirect("ver_carrito")
-
-@login_required
-def biblioteca(request):
-    juegos = BibliotecaItem.objects.filter(
-        usuario=request.user
-    ).select_related("juego").order_by("-fecha_compra")
-
-    return render(request, "biblioteca/biblioteca.html", {
-        "juegos": juegos
-    })
-
-@login_required
-def ver_juego_biblioteca(request, juego_id):
-    item = get_object_or_404(
-        BibliotecaItem,
-        usuario=request.user,
-        juego_id=juego_id
-    )
-
-    return render(request, "biblioteca/ver_juego.html", {
-        "juego": item.juego
-    })
