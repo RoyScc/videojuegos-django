@@ -22,4 +22,5 @@ urlpatterns = [
     path("compra-exitosa/", views.compra_exitosa, name="compra_exitosa"),
     path("biblioteca/", views.biblioteca, name="biblioteca"),
     path("biblioteca/juego/<int:juego_id>/", views.ver_juego_biblioteca, name="ver_juego_biblioteca"),
+    path('juegos/<int:juego_id>/resena/', views.crear_resena, name='crear_resena')
 ]
