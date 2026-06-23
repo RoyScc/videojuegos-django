@@ -84,3 +84,4 @@ class JuegoForm(forms.ModelForm):
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500',
             }),
         }
+

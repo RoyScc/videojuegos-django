@@ -51,3 +51,31 @@ class BibliotecaItem(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.juego.nombre}"
+
+class Resena(models.Model):
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="resenas"
+    )
+    juego = models.ForeignKey(
+        Juego,
+        on_delete=models.CASCADE,
+        related_name="resenas"
+    )
+    contenido = models.TextField()
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.juego.nombre}"
+
+class Noticia(models.Model):
+    titulo = models.CharField(max_length=200, verbose_name="Título de la noticia")
+    contenido = models.TextField()
+    fecha_publicacion = models.DateTimeField(auto_now_add=True)
+    activa = models.BooleanField(default=True, verbose_name="Mostrar en la página")
+
+    class Meta:
+        ordering = ['-fecha_publicacion']
+
+    def __str__(self):
+        return self.titulo
