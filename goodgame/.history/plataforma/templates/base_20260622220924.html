@@ -23,30 +23,22 @@
         </a>
 
         <ul class="flex gap-6">
-            <li>
-                <a href="{% url 'inicio' %}" class="hover:text-green-200">
-                    Inicio
-                </a>
-            </li>
-
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'lista_juegos' %}" class="hover:text-green-200">Juegos</a></li>
-                <li><a href="{% url 'ver_carrito' %}" class="hover:text-green-200 flex items-center gap-2">Carrito 
-                    {% if cantidad_carrito > 0 %}
-                        <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">{{ cantidad_carrito }}</span>
-                    {% endif %}
-                    </a>
-                </li>
-                <li><a href="{% url 'biblioteca' %}" class="hover:text-green-200">Biblioteca</a></li>
-            {% endif %}
+            <li><a href="{% url 'inicio' %}" class="hover:text-green-200">Inicio</a></li>
+            <li><a href="{% url 'lista_juegos' %}" class="hover:text-green-200">Juegos</a></li>
+            <li><a href="{% url 'ver_carrito' %}" class="hover:text-green-200">Carrito</a></li>
+            <li><a href="{% url 'biblioteca' %}" class="hover:text-green-200">Biblioteca</a></li>
         </ul>
 
         <div class="flex items-center gap-4">
             {% if user.is_authenticated %}
                 <span class="text-sm">Hola, {{ user.username }}</span>
-                <a href="{% url 'logout' %}" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white">
-                    Cerrar sesión
-                </a>
+                <form method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white">
+                        Cerrar sesión
+                    </button>
+                </form>
             {% else %}
                 <a href="{% url 'login' %}" class="hover:text-green-200">Login</a>
                 <a href="{% url 'register' %}" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-white">

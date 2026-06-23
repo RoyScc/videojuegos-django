@@ -16,10 +16,7 @@ urlpatterns = [
     path("carrito/", views.ver_carrito, name="ver_carrito"),
     path("carrito/agregar/<int:juego_id>/", views.agregar_al_carrito, name="agregar_al_carrito"),
     path("carrito/quitar/<int:item_id>/", views.quitar_del_carrito, name="quitar_del_carrito"),
-    path("carrito/comprar-ahora/<int:juego_id>/", views.comprar_ahora, name="comprar_ahora"),
     path("carrito/cancelar/", views.cancelar_compra, name="cancelar_compra"),
     path("carrito/comprar/", views.comprar_carrito, name="comprar_carrito"),
     path("compra-exitosa/", views.compra_exitosa, name="compra_exitosa"),
-    path("biblioteca/", views.biblioteca, name="biblioteca"),
-    path("biblioteca/juego/<int:juego_id>/", views.ver_juego_biblioteca, name="ver_juego_biblioteca"),
 ]

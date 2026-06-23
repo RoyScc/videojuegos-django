@@ -5,7 +5,7 @@
 {% block content %}
 <div class="max-w-7xl mx-auto">
 
-    <!-- BIENVENIDA -->
+    <!-- HERO / BIENVENIDA -->
     <div class="border-rgb-animado bg-slate-900 text-white p-8 rounded-lg text-center max-w-5xl mx-auto shadow-2xl mb-10">
         <h1 class="text-4xl font-extrabold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
             GoodGame
@@ -33,12 +33,12 @@
                             <div class="lg:w-1/2 w-full">
                                 {% if juego.imagen %}
                                     <img src="{{ juego.imagen }}"
-                                        alt="{{ juego.nombre }}"
-                                        class="w-full h-[420px] object-cover">
-                                {% else %}
-                                    <img src="{% static 'images/sinImagen.jpg' %}"
+                                         alt="{{ juego.nombre }}"
+                                         class="w-full h-[420px] object-cover">
+                                {% else %}                                    
+                                    <img src="{% static 'images/nogame.jpg' %}"
                                         alt="Sin imagen"
-                                        class="w-full h-[420px] object-cover">
+                                        class="w-full h-52 object-cover">
                                 {% endif %}
                             </div>
 
@@ -68,22 +68,14 @@
                                 {% endif %}
 
                                 <div class="flex gap-3">
-                                    {% if user.is_staff %}
-                                        <a href="{% url 'detalle_juego' juego.id %}"
-                                        class="inline-block bg-green-600 hover:bg-green-700 px-5 py-3 rounded-xl font-semibold">
-                                            Ver detalle
-                                        </a>
-
-                                        <a href="{% url 'editar_juego' juego.id %}"
-                                        class="inline-block bg-yellow-500 hover:bg-yellow-600 px-5 py-3 rounded-xl font-semibold text-white">
-                                            Editar
-                                        </a>
-                                    {% else %}
-                                        <a href="{% url 'agregar_al_carrito' juego.id %}?next={{ request.get_full_path }}"
-                                        class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl font-semibold text-white">
-                                            🛒 Agregar al carrito
-                                        </a>
-                                    {% endif %}
+                                    <a href="{% url 'detalle_juego' juego.id %}"
+                                       class="inline-block bg-green-600 hover:bg-green-700 px-5 py-3 rounded-xl font-semibold">
+                                        Ver detalle
+                                    </a>
+                                    <a href="{% url 'editar_juego' juego.id %}"
+                                       class="inline-block bg-yellow-500 hover:bg-yellow-600 px-5 py-3 rounded-xl font-semibold text-white">
+                                        Editar
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -153,31 +145,15 @@
                                 </p>
                             {% endif %}
 
-                            <div class="flex gap-2 flex-wrap">
-
-                                {% if user.is_staff %}
-
-                                    <a href="{% url 'detalle_juego' juego.id %}"
-                                    class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
-                                        Ver
-                                    </a>
-
-                                    <a href="{% url 'editar_juego' juego.id %}"
-                                    class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">
-                                        Editar
-                                    </a>
-
-                                {% else %}
-
-                                    <a href="{% url 'agregar_al_carrito' juego.id %}?next={{ request.get_full_path }}"
-                                    class="inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-                                         Agregar al 🛒
-                                    </a>
-                                    <a href="{% url 'comprar_ahora' juego.id %}?next={{ request.get_full_path }}" class="inline-flex items-center gap-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">
-                                        Comprar
-                                    </a>
-                                {% endif %}
-
+                            <div class="flex gap-2">
+                                <a href="{% url 'detalle_juego' juego.id %}"
+                                   class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                                    Ver
+                                </a>
+                                <a href="{% url 'editar_juego' juego.id %}"
+                                   class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">
+                                    Editar
+                                </a>
                             </div>
                         </div>
                     </div>

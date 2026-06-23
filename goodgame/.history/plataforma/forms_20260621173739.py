@@ -61,11 +61,10 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
-
 class JuegoForm(forms.ModelForm):
     class Meta:
         model = Juego
-        fields = ['nombre', 'precio']
+        fields = ['nombre']
         widgets = {
             'nombre': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500',

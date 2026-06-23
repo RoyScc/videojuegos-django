@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
+
 
 def base(request):
     juegos = Juego.objects.all()[:20]  # mostrar algunos en home
@@ -47,7 +47,7 @@ def login_view(request):
 
             if user is not None:
                 auth_login(request, user)
-                return redirect('inicio')
+                return redirect('base')
             else:
                 form.add_error(None, 'Usuario o contraseña incorrectos.')
 
@@ -63,7 +63,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)  # lo loguea automáticamente al registrarse
-            return redirect('inicio')
+            return redirect('base')
 
     return render(request, 'registration/register.html', {'form': form})
 
@@ -153,6 +153,20 @@ def importar_juegos_gamesdb(request):
                         fecha_lanzamiento = datetime.strptime(fecha_raw, "%Y-%m-%d").date()
                     except ValueError:
                         fecha_lanzamiento = None
+
+                anio_actual = date.today().year
+
+                if fecha_lanzamiento:
+                    edad = anio_actual - fecha_lanzamiento.year
+
+                    if edad <= 2:
+                        precio = random.randint(7000, 10000)
+                    elif edad <= 5:
+                        precio = random.randint(4000, 7000)
+                    else:
+                        precio = random.randint(1000, 4000)
+                else:
+                    precio = random.randint(1000, 5000)
                     
                 imagen = ""
 
@@ -189,6 +203,7 @@ def importar_juegos_gamesdb(request):
                         "fecha_lanzamiento": fecha_lanzamiento,
                         "resumen": resumen,
                         "imagen": imagen,
+                        "precio": precio,
                     }
                 )
 
@@ -227,12 +242,11 @@ def importar_juegos_gamesdb(request):
         messages.error(request, f"Error al conectar con TheGamesDB: {e}")
         return redirect("lista_juegos")
 
-@staff_member_required
 def detalle_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
     return render(request, 'juegos/detalle_juego.html', {'juego': juego})
 
-@staff_member_required
+
 def editar_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
 
@@ -249,7 +263,7 @@ def editar_juego(request, juego_id):
         'juego': juego
     })
 
-@staff_member_required
+
 def borrar_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
 
@@ -260,7 +274,6 @@ def borrar_juego(request, juego_id):
     return render(request, 'juegos/borrar_juego.html', {'juego': juego})
 
 #Agregado de importación de imágenes desde TheGamesDB
-@staff_member_required
 def importar_imagenes_gamesdb(request):
     if request.method != "POST":
         return redirect("lista_juegos")
@@ -350,23 +363,8 @@ def agregar_al_carrito(request, juego_id):
     )
 
     messages.success(request, f"{juego.nombre} fue agregado al carrito.")
-
-    next_url = request.GET.get("next")
-    if next_url:
-        return redirect(next_url)
-
-    return redirect("inicio")
-
-@login_required
-def comprar_ahora(request, juego_id):
-    juego = get_object_or_404(Juego, id=juego_id)
-
-    CarritoItem.objects.get_or_create(
-        usuario=request.user,
-        juego=juego
-    )
-
     return redirect("ver_carrito")
+
 
 @login_required
 def ver_carrito(request):
@@ -449,16 +447,4 @@ def biblioteca(request):
 
     return render(request, "biblioteca/biblioteca.html", {
         "juegos": juegos
-    })
-
-@login_required
-def ver_juego_biblioteca(request, juego_id):
-    item = get_object_or_404(
-        BibliotecaItem,
-        usuario=request.user,
-        juego_id=juego_id
-    )
-
-    return render(request, "biblioteca/ver_juego.html", {
-        "juego": item.juego
     })
