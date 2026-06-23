@@ -23,6 +23,10 @@
                         {% if item.juego.plataforma %}
                             <p class="text-sm text-gray-500 mb-2">{{ item.juego.plataforma }}</p>
                         {% endif %}
+                        
+                        {% if item.juego.descripcion %}
+                            <p class="text-sm text-gray-600 mb-4">{{ item.juego.descripcion|truncatewords:20 }}</p>
+                        {% endif %}
                         <p class="text-sm text-green-600 font-semibold">
                             Comprado el {{ item.fecha_compra|date:"d/m/Y" }}
                         </p>

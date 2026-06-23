@@ -19,19 +19,7 @@ def base(request):
     return render(request, 'base.html', {'juegos': juegos})
 
 def inicio(request):
-    busqueda = request.GET.get("q", "").strip()
-    letra = request.GET.get("letra", "").strip()
-
     juegos = Juego.objects.all().order_by("nombre")
-
-    if busqueda:
-        juegos = juegos.filter(
-            Q(nombre__icontains=busqueda) |
-            Q(plataforma__icontains=busqueda)
-        )
-
-    if letra:
-        juegos = juegos.filter(nombre__istartswith=letra)
 
     juegos_carrousel = juegos[:5]
     resto_juegos = juegos[5:]
@@ -40,14 +28,9 @@ def inicio(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    letras = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
     return render(request, "inicio.html", {
         "juegos_carrousel": juegos_carrousel,
         "page_obj": page_obj,
-        "busqueda": busqueda,
-        "letra_actual": letra,
-        "letras": letras,
     })
 
 def login_view(request):
