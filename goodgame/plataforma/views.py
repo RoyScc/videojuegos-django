@@ -93,14 +93,28 @@ def logout_view(request):
 
 def lista_juegos(request):
     juegos = Juego.objects.all().order_by("nombre")
-    mostrar_boton_importar = not juegos.exists()
+
+    mostrar_boton_importar = (
+        request.user.is_staff and
+        not juegos.exists()
+    )
+
+    mostrar_boton_importar_imagenes = (
+        request.user.is_staff and
+        juegos.exists() and
+        juegos.filter(imagen__isnull=True).exists() or
+        request.user.is_staff and
+        juegos.exists() and
+        juegos.filter(imagen="").exists()
+    )
 
     return render(request, "juegos/lista_juegos.html", {
         "juegos": juegos,
-        "mostrar_boton_importar": mostrar_boton_importar
+        "mostrar_boton_importar": mostrar_boton_importar,
+        "mostrar_boton_importar_imagenes": mostrar_boton_importar_imagenes,
     })
 
-
+@staff_member_required
 def importar_juegos_gamesdb(request):
     if request.method != "POST":
         return redirect("lista_juegos")
