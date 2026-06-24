@@ -221,13 +221,12 @@
             <!-- PAGINADO -->
             <div class="flex justify-center items-center gap-2 mt-10 flex-wrap">
                 {% if page_obj.has_previous %}
-                    <a href="?{% if busqueda %}q={{ busqueda }}&{% endif %}{% if letra_actual %}letra={{ letra_actual }}&{% endif %}page=1"
-                    class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                    <a href="?page=1"
+                       class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
                         « Primera
                     </a>
-
-                    <a href="?{% if busqueda %}q={{ busqueda }}&{% endif %}{% if letra_actual %}letra={{ letra_actual }}&{% endif %}page={{ page_obj.previous_page_number }}"
-                    class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                    <a href="?page={{ page_obj.previous_page_number }}"
+                       class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
                         ‹ Anterior
                     </a>
                 {% endif %}
@@ -237,17 +236,18 @@
                 </span>
 
                 {% if page_obj.has_next %}
-                    <a href="?{% if busqueda %}q={{ busqueda }}&{% endif %}{% if letra_actual %}letra={{ letra_actual }}&{% endif %}page={{ page_obj.next_page_number }}"
-                    class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                    <a href="?page={{ page_obj.next_page_number }}"
+                       class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
                         Siguiente ›
                     </a>
-
-                    <a href="?{% if busqueda %}q={{ busqueda }}&{% endif %}{% if letra_actual %}letra={{ letra_actual }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
-                    class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                    <a href="?page={{ page_obj.paginator.num_pages }}"
+                       class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
                         Última »
                     </a>
                 {% endif %}
             </div>
+        {% else %}
+            <p class="text-gray-700">No hay más juegos para mostrar.</p>
         {% endif %}
     </section>
 </div>

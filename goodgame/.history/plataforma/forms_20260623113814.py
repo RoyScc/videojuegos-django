@@ -77,9 +77,9 @@ class JuegoForm(forms.ModelForm):
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500',
                 'placeholder': 'Nombre del juego'
             }),
-            'resumen': forms.Textarea(attrs={
+            'descripcion': forms.Textarea(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500',
-                'placeholder': 'Resumen del juego',
+                'placeholder': 'Descripción del juego',
                 'rows': 4
             }),
             'precio': forms.NumberInput(attrs={

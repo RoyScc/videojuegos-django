@@ -14,39 +14,7 @@
             Los mejores juegos de la historia en una sola página. ¡Explora, descubre y disfruta de la experiencia de juego definitiva!
         </p>
     </div>
-    <div class="bg-white p-6 rounded-2xl shadow mb-8">
-        <form method="GET" class="flex gap-3 mb-5">
-            <input type="text"
-                name="q"
-                value="{{ busqueda }}"
-                placeholder="Buscar por nombre o plataforma..."
-                class="w-full px-4 py-3 border rounded-xl">
 
-            <button type="submit"
-                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold">
-                Buscar
-            </button>
-
-            <a href="{% url 'inicio' %}"
-            class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-xl font-bold">
-                Limpiar
-            </a>
-        </form>
-
-        <div class="flex flex-wrap gap-2">
-            {% for letra in letras %}
-                <a href="?letra={{ letra }}{% if busqueda %}&q={{ busqueda }}{% endif %}"
-                class="px-3 py-2 rounded-lg font-semibold
-                {% if letra_actual == letra %}
-                    bg-green-600 text-white
-                {% else %}
-                    bg-gray-200 text-gray-700 hover:bg-gray-300
-                {% endif %}">
-                    {{ letra }}
-                </a>
-            {% endfor %}
-        </div>
-    </div>
     <!-- CARRUSEL -->
     {% if juegos_carrousel %}
     <section class="mb-12">
@@ -155,11 +123,11 @@
                 {% for juego in page_obj %}
                     <div class="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden hover:shadow-xl transition">
                         {% if juego.imagen_local %}
-                            <img src="{{ juego.imagen_local.url }}" class="w-full h-96 object-contain bg-slate-900" alt="{{ juego.nombre }}">
+                            <img src="{{ juego.imagen_local.url }}" class="w-full h-96 object-cover" alt="{{ juego.nombre }}">
                         {% elif juego.imagen %}
-                            <img src="{{ juego.imagen }}" class="w-full h-96 object-contain bg-slate-900" alt="{{ juego.nombre }}">
+                            <img src="{{ juego.imagen }}" class="w-full h-96 object-cover" alt="{{ juego.nombre }}">
                         {% else %}
-                            <img src="{% static 'images/sinImagen.jpg' %}" class="w-full h-96 object-contain bg-slate-900" alt="Sin imagen">
+                            <img src="{% static 'images/sinImagen.jpg' %}" class="w-full h-96 object-cover" alt="Sin imagen">
                         {% endif %}
 
                         <div class="p-5">
@@ -221,13 +189,12 @@
             <!-- PAGINADO -->
             <div class="flex justify-center items-center gap-2 mt-10 flex-wrap">
                 {% if page_obj.has_previous %}
-                    <a href="?{% if busqueda %}q={{ busqueda }}&{% endif %}{% if letra_actual %}letra={{ letra_actual }}&{% endif %}page=1"
-                    class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                    <a href="?page=1"
+                       class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
                         « Primera
                     </a>
-
-                    <a href="?{% if busqueda %}q={{ busqueda }}&{% endif %}{% if letra_actual %}letra={{ letra_actual }}&{% endif %}page={{ page_obj.previous_page_number }}"
-                    class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                    <a href="?page={{ page_obj.previous_page_number }}"
+                       class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
                         ‹ Anterior
                     </a>
                 {% endif %}
@@ -237,17 +204,18 @@
                 </span>
 
                 {% if page_obj.has_next %}
-                    <a href="?{% if busqueda %}q={{ busqueda }}&{% endif %}{% if letra_actual %}letra={{ letra_actual }}&{% endif %}page={{ page_obj.next_page_number }}"
-                    class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                    <a href="?page={{ page_obj.next_page_number }}"
+                       class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
                         Siguiente ›
                     </a>
-
-                    <a href="?{% if busqueda %}q={{ busqueda }}&{% endif %}{% if letra_actual %}letra={{ letra_actual }}&{% endif %}page={{ page_obj.paginator.num_pages }}"
-                    class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                    <a href="?page={{ page_obj.paginator.num_pages }}"
+                       class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
                         Última »
                     </a>
                 {% endif %}
             </div>
+        {% else %}
+            <p class="text-gray-700">No hay más juegos para mostrar.</p>
         {% endif %}
     </section>
 </div>

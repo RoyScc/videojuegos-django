@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+
 {% block title %}Juegos{% endblock %}
 
 {% block content %}
@@ -11,20 +11,16 @@
             <form method="POST" action="{% url 'importar_juegos_gamesdb' %}">
                 {% csrf_token %}
                 <button type="submit"
-                        class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold">
-                    Importar juegos
+                    class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold">
+                Importar juegos
                 </button>
             </form>
-        {% endif %}
-
-        {% if mostrar_boton_importar_imagenes %}
             <form method="POST" action="{% url 'importar_imagenes_gamesdb' %}">
-                {% csrf_token %}
-                <button type="submit"
-                        class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-3 rounded-xl font-semibold">
-                    Importar imágenes
-                </button>
-            </form>
+            {% csrf_token %}
+            <button type="submit"
+                    class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-3 rounded-xl font-semibold">
+                Cargar imágenes
+            </button>
         {% endif %}
         
     </form>
@@ -77,12 +73,12 @@
                         </p>
                     {% endif %}
                     
-                    <a href="{% url 'detalle_juego' juego.id %}"
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
-                        Ver
-                    </a>
                     {% if user.is_staff %}
                         <div class="flex gap-3">
+                            <a href="{% url 'detalle_juego' juego.id %}"
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                                Ver
+                            </a>
                             <a href="{% url 'editar_juego' juego.id %}"
                             class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">
                                 Editar

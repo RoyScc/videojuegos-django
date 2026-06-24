@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from .forms import LoginForm, RegisterForm, JuegoForm
 from django.http import HttpResponse
-from .models import Juego, CarritoItem, BibliotecaItem, Resena
+from .models import Juego, CarritoItem, BibliotecaItem
 from datetime import datetime
 from django.conf import settings
 from django.shortcuts import redirect
@@ -19,19 +19,7 @@ def base(request):
     return render(request, 'base.html', {'juegos': juegos})
 
 def inicio(request):
-    busqueda = request.GET.get("q", "").strip()
-    letra = request.GET.get("letra", "").strip()
-
     juegos = Juego.objects.all().order_by("nombre")
-
-    if busqueda:
-        juegos = juegos.filter(
-            Q(nombre__icontains=busqueda) |
-            Q(plataforma__icontains=busqueda)
-        )
-
-    if letra:
-        juegos = juegos.filter(nombre__istartswith=letra)
 
     juegos_carrousel = juegos[:5]
     resto_juegos = juegos[5:]
@@ -40,14 +28,9 @@ def inicio(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    letras = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
     return render(request, "inicio.html", {
         "juegos_carrousel": juegos_carrousel,
         "page_obj": page_obj,
-        "busqueda": busqueda,
-        "letra_actual": letra,
-        "letras": letras,
     })
 
 def login_view(request):
@@ -93,28 +76,14 @@ def logout_view(request):
 
 def lista_juegos(request):
     juegos = Juego.objects.all().order_by("nombre")
-
-    mostrar_boton_importar = (
-        request.user.is_staff and
-        not juegos.exists()
-    )
-
-    mostrar_boton_importar_imagenes = (
-        request.user.is_staff and
-        juegos.exists() and
-        juegos.filter(imagen__isnull=True).exists() or
-        request.user.is_staff and
-        juegos.exists() and
-        juegos.filter(imagen="").exists()
-    )
+    mostrar_boton_importar = not juegos.exists()
 
     return render(request, "juegos/lista_juegos.html", {
         "juegos": juegos,
-        "mostrar_boton_importar": mostrar_boton_importar,
-        "mostrar_boton_importar_imagenes": mostrar_boton_importar_imagenes,
+        "mostrar_boton_importar": mostrar_boton_importar
     })
 
-@staff_member_required
+
 def importar_juegos_gamesdb(request):
     if request.method != "POST":
         return redirect("lista_juegos")
@@ -258,15 +227,10 @@ def importar_juegos_gamesdb(request):
         messages.error(request, f"Error al conectar con TheGamesDB: {e}")
         return redirect("lista_juegos")
 
-@login_required
+@staff_member_required
 def detalle_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
-    resenas = juego.resenas.all().order_by('-id') # traigo las resenas del juego
-    
-    return render(request, 'juegos/detalle_juego.html', {
-        'juego': juego,
-        'resenas': resenas
-    })
+    return render(request, 'juegos/detalle_juego.html', {'juego': juego})
 
 @staff_member_required
 def editar_juego(request, juego_id):
@@ -377,27 +341,7 @@ def importar_imagenes_gamesdb(request):
         return redirect("lista_juegos")
     
 
-
-# resenas
-@login_required
-def crear_resena(request, juego_id):
-    juego = get_object_or_404(Juego, id=juego_id)
-    
-    if request.method == "POST":
-        contenido = request.POST.get("contenido", "").strip()
-        if contenido:
-            Resena.objects.create(
-                usuario=request.user,
-                juego=juego,
-                contenido=contenido
-            )
-            messages.success(request, "Reseña creada exitosamente.")
-        else:
-            messages.error(request, "El contenido de la reseña no puede estar vacío.")
-            
-    return redirect("detalle_juego", juego_id=juego_id)
-
-# carrito de compras
+#Agregado de carrito de compras
 @login_required
 def agregar_al_carrito(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
@@ -477,7 +421,7 @@ def comprar_carrito(request):
 def compra_exitosa(request):
     return render(request, "carrito/compra_exitosa.html")
 
-
+#Agregado de biblioteca de juegos
 
 @login_required
 def comprar_carrito(request):
@@ -498,8 +442,6 @@ def comprar_carrito(request):
         return redirect("compra_exitosa")
 
     return redirect("ver_carrito")
-
-# biblioteca de juegos
 
 @login_required
 def biblioteca(request):
