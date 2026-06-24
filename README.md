@@ -1,6 +1,6 @@
 # 🎮 GoodGame - Plataforma Web de Videojuegos
 
-Plataforma web desarrollada como Trabajo Práctico Evaluativo para el 3er año de la Tecnicatura en Desarrollo de Software (ITEC Río Cuarto). Este sistema permite a los usuarios explorar un amplio catálogo de videojuegos, gestionar un carrito de compras, armar su biblioteca personal y compartir reseñas con la comunidad.
+Plataforma web. Este sistema permite a los usuarios explorar un amplio catálogo de videojuegos, gestionar un carrito de compras, armar su biblioteca personal y compartir reseñas con la comunidad.
 
 ## ✨ Características Principales
 
