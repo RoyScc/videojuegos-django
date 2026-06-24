@@ -11,16 +11,20 @@
             <form method="POST" action="{% url 'importar_juegos_gamesdb' %}">
                 {% csrf_token %}
                 <button type="submit"
-                    class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold">
-                Importar juegos
+                        class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold">
+                    Importar juegos
                 </button>
             </form>
+        {% endif %}
+
+        {% if mostrar_boton_importar_imagenes %}
             <form method="POST" action="{% url 'importar_imagenes_gamesdb' %}">
-            {% csrf_token %}
-            <button type="submit"
-                    class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-3 rounded-xl font-semibold">
-                Cargar imágenes
-            </button>
+                {% csrf_token %}
+                <button type="submit"
+                        class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-3 rounded-xl font-semibold">
+                    Importar imágenes
+                </button>
+            </form>
         {% endif %}
         
     </form>
