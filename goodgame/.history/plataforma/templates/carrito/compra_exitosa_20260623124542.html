@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Compra exitosa | GoodGame{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-10 rounded-2xl shadow-lg text-center">
+    <h1 class="text-4xl font-bold text-green-600 mb-4">Compra exitosa 🎉</h1>
+    <p class="text-gray-700 text-lg mb-6">
+        Gracias por tu compra. Tus juegos digitales fueron adquiridos correctamente.
+    </p>
+
+    <a href="{% url 'inicio' %}"
+       class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-bold">
+        Volver al inicio
+    </a>
+    <a href="{% url 'biblioteca' %}"
+       class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-bold">
+        Ver mi biblioteca
+    </a>
+</div>
+{% endblock %}

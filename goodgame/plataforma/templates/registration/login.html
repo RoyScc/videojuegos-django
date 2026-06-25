@@ -3,10 +3,65 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+<div class="flex items-center justify-center py-16 px-4">
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+        
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">
+            Iniciar sesión
+        </h2>
+        <p class="text-center text-gray-500 mb-8">
+            Entrá a tu cuenta de GoodGame
+        </p>
+
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="flex items-center gap-4">
+                <label for="{{ form.username.id_for_label }}" class="w-32 text-sm font-semibold text-gray-700">
+                    Usuario
+                </label>
+                <div class="flex-1">
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.username.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <label for="{{ form.password.id_for_label }}" class="w-32 text-sm font-semibold text-gray-700">
+                    Contraseña
+                </label>
+                <div class="flex-1">
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.password.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <button
+                type="submit"
+                class="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 rounded-xl transition duration-200"
+            >
+                Ingresar
+            </button>
+        </form>
+
+        <div class="mt-6 text-center text-sm text-gray-600">
+            ¿No tenés cuenta?
+            <a href="{% url 'register' %}" class="text-green-600 hover:text-green-500 font-semibold">
+                Registrate
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

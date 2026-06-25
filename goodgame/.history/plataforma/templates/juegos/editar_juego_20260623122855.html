@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Editar {{ juego.nombre }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto py-10 px-4">
+    <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Editar juego</h1>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                {% if juego.imagen_local %}
+                    <img src="{{ juego.imagen_local.url }}" alt="{{ juego.nombre }}" class="w-full h-auto rounded-lg mb-4">
+                {% elif juego.imagen %}
+                    <img src="{{ juego.imagen }}" alt="{{ juego.nombre }}" class="w-full h-auto rounded-lg mb-4">
+                {% else %}
+                    <img src="{% static 'images/sinImagen.jpg' %}" alt="Sin imagen" class="w-full h-auto rounded-lg mb-4">
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ form.nombre.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Nombre
+                </label>
+                {{ form.nombre }}
+                {% if form.nombre.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.nombre.errors.0 }}</p>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ form.imagen_local.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Imagen local    
+                </label>
+                {{ form.imagen_local }}
+                {% if form.imagen_local.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.imagen_local.errors.0 }}</p>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ form.resumen.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Resumen
+                </label>
+                {{ form.resumen }}
+                {% if form.resumen.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.resumen.errors.0 }}</p>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ form.plataforma.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Plataforma
+                </label>
+                {{ form.plataforma }}
+                {% if form.plataforma.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.plataforma.errors.0 }}</p>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ form.precio.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Precio
+                </label>
+                {{ form.precio }}
+                {% if form.precio.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.precio.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="flex gap-4">
+                <button type="submit"
+                        class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold">
+                    Guardar cambios
+                </button>
+
+                <a href="{% url 'detalle_juego' juego.id %}"
+                   class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-3 rounded-xl">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,3 +1,39 @@
 from django.contrib import admin
+from .models import Juego, Noticia
 
-# Register your models here.
+
+class JuegoAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "nombre",
+        "plataforma",
+        "fecha_lanzamiento",
+        "gamesdb_id",
+        "tiene_imagen",
+        "precio",
+    )
+
+    search_fields = (
+        "nombre",
+        "plataforma",
+        "resumen",
+        "precio",
+    )
+
+    list_filter = (
+        "plataforma",
+        "fecha_lanzamiento",
+        "precio",
+    )
+
+    ordering = ("nombre",)
+
+    def tiene_imagen(self, obj):
+        return bool(obj.imagen)
+
+    tiene_imagen.boolean = True
+    tiene_imagen.short_description = "Imagen"
+
+
+admin.site.register(Juego, JuegoAdmin)
+admin.site.register(Noticia)

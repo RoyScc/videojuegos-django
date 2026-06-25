@@ -1,0 +1,20 @@
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Clase personalizada compatible con tus componentes de Tailwind */
+.border-rgb-animado {
+  border: 4px solid transparent;
+  border-image: conic-gradient(
+    from var(--gradient-angle),
+    #ff0000, #ff7700, #ffff00, #00ff00, #00ffff, #0000ff, #8a00ff, #ff00ff, #ff0000
+  ) 1;
+  animation: rotation-rgb 4s linear infinite;
+}
+
+@keyframes rotation-rgb {
+  0% { --gradient-angle: 0deg; }
+  100% { --gradient-angle: 360deg; }
+}

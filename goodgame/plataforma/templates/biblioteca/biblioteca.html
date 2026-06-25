@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mi Biblioteca | GoodGame{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Mi Biblioteca</h1>
+
+    {% if juegos %}
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for item in juegos %}
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                    {% if item.juego.imagen %}
+                        <img src="{{ item.juego.imagen }}" class="w-full h-52 object-cover">
+                    {% else %}
+                        <img src="{% static 'images/sinImagen.jpg' %}" class="w-full h-52 object-cover">
+                    {% endif %}
+
+                    <div class="p-5">
+                        <h2 class="text-lg font-bold text-gray-800 mb-2">{{ item.juego.nombre }}</h2>
+
+                        {% if item.juego.plataforma %}
+                            <p class="text-sm text-gray-500 mb-2">{{ item.juego.plataforma }}</p>
+                        {% endif %}
+                        <p class="text-sm text-green-600 font-semibold">
+                            Comprado el {{ item.fecha_compra|date:"d/m/Y" }}
+                        </p>
+
+                        <a href="{% url 'ver_juego_biblioteca' item.juego.id %}" class="inline-block mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                            Ver juego
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-white p-8 rounded-2xl shadow text-center">
+            <p class="text-gray-600 mb-4">Todavía no compraste ningún juego.</p>
+            <a href="{% url 'inicio' %}"
+               class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl">
+                Explorar juegos
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
