@@ -12,23 +12,22 @@ Plataforma web. Este sistema permite a los usuarios explorar un amplio catálogo
 
 ## 📸 Proyecto en Funcionamiento
 
-*(Nota: Proyecto documentado con capturas de pantalla de la plataforma en su versión final).*
 
 ### Pantalla de Inicio y Catálogo
 Aquí se puede apreciar la página principal, la cual cuenta con un carrusel dinámico exhibiendo los juegos destacados del momento, seguido de la grilla completa del catálogo disponible.
-![Inicio con carrusel y lista de juegos](<REEMPLAZA_ESTO_CON_LA_RUTA_DE_TU_IMAGEN_DEL_INICIO>)
+![Inicio con carrusel y lista de juegos](docs/inicio_hero.jpeg)
 
 ### Navegación Principal
 El menú de navegación de la plataforma, que se adapta según el estado de sesión del usuario, brindando acceso rápido al inicio, catálogo, carrito de compras y biblioteca personal.
-![Menú de Navegación (Navbar)](<REEMPLAZA_ESTO_CON_LA_RUTA_DE_TU_IMAGEN_DEL_NAVBAR>)
+![Menú de Navegación (Navbar)](docs/navbar.jpeg)
 
 ### Buscador 
 Permite al usuario filtrar los juegos por su nombre, brindando un rapido y directo acceso segun las necesidades del mismo.
-
+![Filtrado de juegos (Buscador)](docs/buscador.jpeg)
 
 ### Biblioteca del Usuario
 Espacio personal donde se almacenan todos los videojuegos que el usuario ha adquirido a través de la simulación del carrito de compras.
-![Biblioteca de juegos comprados](<REEMPLAZA_ESTO_CON_LA_RUTA_DE_TU_IMAGEN_DE_LA_BIBLIOTECA>)
+![Biblioteca de juegos comprados](docs/biblioteca_usuario.jpeg)
 
 ## 🛠️ Tecnologías Utilizadas
 
