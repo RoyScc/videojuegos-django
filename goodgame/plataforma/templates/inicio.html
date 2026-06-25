@@ -5,7 +5,7 @@
 {% block content %}
 <div class="max-w-7xl mx-auto">
 
-    <!-- BIENVENIDA -->
+    
     <div class="border-rgb-animado bg-slate-900 text-white p-8 rounded-lg text-center max-w-5xl mx-auto shadow-2xl mb-10">
         <h1 class="text-4xl font-extrabold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
             GoodGame
@@ -139,6 +139,30 @@
             </button>
         </div>
     </section>
+    {% endif %}
+
+    {% if noticia %}
+        <section class="mb-12 mt-8 max-w-6xl mx-auto px-4">
+            <div class="bg-gradient-to-r from-blue-900 to-purple-800 rounded-2xl p-8 text-white shadow-lg border border-purple-500 relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-40 h-40 bg-purple-500 opacity-20 rounded-full blur-3xl"></div>
+
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="flex-1">
+                        <span class="bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block shadow-sm">
+                            Flash Informativo
+                        </span>
+                        <h2 class="text-3xl font-extrabold mb-3 tracking-tight">{{ noticia.titulo }}</h2>
+                        <p class="text-purple-100 text-lg mb-4">{{ noticia.contenido }}</p>
+                        <p class="text-sm text-purple-300 font-medium">Publicado el: {{ noticia.fecha_publicacion|date:"d M, Y" }}</p>
+                    </div>
+                    <div class="hidden md:flex shrink-0 bg-white/10 p-5 rounded-xl border border-white/20 backdrop-blur-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
     {% endif %}
 
     <!-- RESTO DE JUEGOS -->

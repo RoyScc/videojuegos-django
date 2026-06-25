@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from .forms import LoginForm, RegisterForm, JuegoForm
 from django.http import HttpResponse
-from .models import Juego, CarritoItem, BibliotecaItem, Resena
+from .models import Juego, CarritoItem, BibliotecaItem, Resena, Noticia
 from datetime import datetime
 from django.conf import settings
 from django.shortcuts import redirect
@@ -21,7 +21,7 @@ def base(request):
 def inicio(request):
     busqueda = request.GET.get("q", "").strip()
     letra = request.GET.get("letra", "").strip()
-
+    noticia_destacada = Noticia.objects.filter(activa=True).first()
     juegos = Juego.objects.all().order_by("nombre")
 
     if busqueda:
@@ -48,6 +48,7 @@ def inicio(request):
         "busqueda": busqueda,
         "letra_actual": letra,
         "letras": letras,
+        "noticia": noticia_destacada,
     })
 
 def login_view(request):
@@ -79,7 +80,7 @@ def register_view(request):
 
         if form.is_valid():
             user = form.save()
-            auth_login(request, user)  # lo loguea automáticamente al registrarse
+            auth_login(request, user)
             return redirect('inicio')
 
     return render(request, 'registration/register.html', {'form': form})
@@ -261,7 +262,7 @@ def importar_juegos_gamesdb(request):
 @login_required
 def detalle_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
-    resenas = juego.resenas.all().order_by('-id') # traigo las resenas del juego
+    resenas = juego.resenas.all().order_by('-id')
     
     return render(request, 'juegos/detalle_juego.html', {
         'juego': juego,
@@ -298,6 +299,7 @@ def borrar_juego(request, juego_id):
     return render(request, 'juegos/borrar_juego.html', {'juego': juego})
 
 #Agregado de importación de imágenes desde TheGamesDB
+
 @staff_member_required
 def importar_imagenes_gamesdb(request):
     if request.method != "POST":

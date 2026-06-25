@@ -1,0 +1,8 @@
+asgiref==3.11.1
+Django==6.0.4
+pillow==12.2.0
+sqlparse==0.5.5
+dotenv==0.9.9
+django-browser-reload==1.21.0
+pytailwindcss==0.3.1
+django-tailwind==4.5.0

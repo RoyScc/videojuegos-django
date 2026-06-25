@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Juego
+from .models import Juego, Noticia
 
 
 class JuegoAdmin(admin.ModelAdmin):
@@ -36,3 +36,4 @@ class JuegoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Juego, JuegoAdmin)
+admin.site.register(Noticia)
